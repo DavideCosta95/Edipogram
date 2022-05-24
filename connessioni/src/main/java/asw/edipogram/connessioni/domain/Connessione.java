@@ -4,20 +4,28 @@ import javax.persistence.*;
 
 import lombok.*; 
 
-@Entity 
-@Data @NoArgsConstructor
+@Entity(name = "connessioni")
+@Data
+@NoArgsConstructor
 public class Connessione {
 
 	@Id 
-	@GeneratedValue
-	private Long id; 
-	private String utente; 
-	private String tipo; 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id", nullable = false)
+	@NonNull
+	private Long id;
+
+	@Column(name="utente", nullable = false)
+	@NonNull
+	private String utente;
+
+	@Column(name="tipo", nullable = false)
+	@NonNull
+	private String tipo;
 	
-	public Connessione(String utente, String tipo) {
+	public Connessione(@NonNull String utente, @NonNull String tipo) {
 		this(); 
 		this.utente = utente; 
 		this.tipo = tipo; 
 	}
-	
 }
