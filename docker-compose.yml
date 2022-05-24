@@ -12,6 +12,20 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+
+  db-enigmi-seguiti:
+    container_name: db-enigmi-seguiti
+    image: postgres
+    volumes:
+      - ./enigmi-seguiti/src/sql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      POSTGRES_DB: enigmi-seguiti
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
   db-connessioni:
     container_name: db-connessioni
     image: postgres
