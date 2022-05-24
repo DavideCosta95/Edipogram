@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  db-enigmi:
+    container_name: db-enigmi
+    image: postgres
+    volumes:
+      - ./enigmi/src/sql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      POSTGRES_DB: enigmi
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
