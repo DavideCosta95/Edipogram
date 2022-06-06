@@ -7,8 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateConnessioneRequest {
 
-	private String utente; 
-	private String tipo; 
+	@NonNull
+	private String utente;
+
+	@NonNull
+	private String tipo;
 
 }
-
