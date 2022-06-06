@@ -5,15 +5,27 @@ import asw.edipogram.enigmi.domain.Enigma;
 import lombok.*; 
 
 /* Enigma, in formato breve (senza soluzione). */ 
-@Data @NoArgsConstructor
+@Data
+@NoArgsConstructor
 public class GetEnigmaResponse {
 
+	@NonNull
 	private Long id; 
-	private String autore; 
-	private String tipo; 
-	private String tipoSpecifico; 
+
+	@NonNull
+	private String autore;
+
+	@NonNull
+	private String tipo;
+
+	@NonNull
+	private String tipoSpecifico;
+
+	@NonNull
 	private String titolo; 
-	private String[] testo; 
+
+	@NonNull
+	private String[] testo;
 
 	public GetEnigmaResponse(Enigma r) {
 		this.id = r.getId(); 
@@ -23,6 +35,4 @@ public class GetEnigmaResponse {
 		this.titolo = r.getTitolo(); 
 		this.testo = r.getTesto(); 
 	}
-	
 }
-

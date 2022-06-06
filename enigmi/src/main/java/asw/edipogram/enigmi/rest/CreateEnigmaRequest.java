@@ -7,12 +7,23 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateEnigmaRequest {
 
+	@NonNull
 	private String autore; 
-	private String tipo; 
-	private String tipoSpecifico; 
-	private String titolo; 
-	private String[] testo; 
-	private String[] soluzione; 
+
+	@NonNull
+	private String tipo;
+
+	@NonNull
+	private String tipoSpecifico;
+
+	@NonNull
+	private String titolo;
+
+	@NonNull
+	private String[] testo;
+
+	@NonNull
+	private String[] soluzione;
 
 }
 
