@@ -6,9 +6,9 @@ import java.util.*;
 
 public interface ConnessioniRepository extends CrudRepository<Connessione, Long> {
 
-	public Collection<Connessione> findAll();
+	Collection<Connessione> findAll();
 
-	public Collection<Connessione> findByUtente(String utente);
+	Collection<Connessione> findByUtente(String utente);
 
 }
 
