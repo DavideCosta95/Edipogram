@@ -1,7 +1,8 @@
 package asw.edipogram.enigmiseguiti.enigmi;
 
-import asw.edipogram.enigmiseguiti.domain.*; 
+import asw.edipogram.enigmiseguiti.domain.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,13 +11,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.*; 
 import java.util.stream.*; 
 
-@Service 
-@Primary 
+@Service
+@Primary
+@Slf4j
 public class EnigmiServiceWebClient implements EnigmiService {
 
 	@Autowired 
@@ -33,17 +34,14 @@ public class EnigmiServiceWebClient implements EnigmiService {
         try {
             enigmi = response.collectList().block();
         } catch (WebClientException e) {
-            e.printStackTrace();
+            log.error("", e);
         }
 		return enigmi; 
 	}	
 
 	private static String toString(Collection<String> c) {
-		String result = 
-			c.stream()
-				.map(n -> String.valueOf(n))
+		return c.stream()
+				.map(String::valueOf)
 				.collect(Collectors.joining(",", "", ""));
-		return result; 
 	}
-
 }

@@ -26,6 +26,4 @@ public class LoadBalancedWebClientConfig {
 					.uriBuilderFactory(factory)
 					.build();
     }
-
 }
-

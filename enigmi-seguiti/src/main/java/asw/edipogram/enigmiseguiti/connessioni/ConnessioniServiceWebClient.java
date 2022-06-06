@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.*; 
 
@@ -35,6 +34,5 @@ public class ConnessioniServiceWebClient implements ConnessioniService {
             e.printStackTrace();
         }
 		return connessioni; 
-	}	
-
+	}
 }

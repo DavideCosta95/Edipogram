@@ -4,6 +4,6 @@ import java.util.*;
 
 public interface EnigmiService {
 
-	public Collection<Enigma> getEnigmiByTipi(Collection<String> tipi); 
+	Collection<Enigma> getEnigmiByTipi(Collection<String> tipi);
 
 }
