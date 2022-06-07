@@ -15,8 +15,7 @@ public class ConnessioniService {
 		this.connessioniRepository = connessioniRepository;
 	}
 
- 	public Connessione createConnessione(String utente, String tipo) {
-		Connessione connessione = new Connessione(utente, tipo); 
+ 	public Connessione addConnessione(Connessione connessione) {
 		return connessioniRepository.save(connessione);
 	}
 

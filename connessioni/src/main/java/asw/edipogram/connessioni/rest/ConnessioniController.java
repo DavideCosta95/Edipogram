@@ -2,6 +2,8 @@ package asw.edipogram.connessioni.rest;
 
 import asw.edipogram.connessioni.domain.*;
 
+import asw.edipogram.connessioni.messaging.ConnessioneCreatedEvent;
+import asw.edipogram.connessioni.messaging.KafkaController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +20,12 @@ import java.util.*;
 public class ConnessioniController {
 
 	private final ConnessioniService connessioniService;
+	private final KafkaController kafkaController;
 
 	@Autowired
-	private ConnessioniController(ConnessioniService connessioniService) {
+	private ConnessioniController(ConnessioniService connessioniService, KafkaController kafkaController) {
 		this.connessioniService = connessioniService;
+		this.kafkaController = kafkaController;
 	}
 
 	/* Crea una nuova connessione. 
@@ -30,8 +34,11 @@ public class ConnessioniController {
 	public Connessione createConnessione(@RequestBody CreateConnessioneRequest request) {
 		String utente = request.getUtente();
 		String tipo = request.getTipo();
-		log.info("REST CALL: createConnessione {}, {}", utente, tipo);
-		return connessioniService.createConnessione(utente, tipo);
+		Connessione connessione = new Connessione(utente, tipo);
+		connessione = connessioniService.addConnessione(connessione);
+		log.info("REST CALL: createConnessione {}", connessione);
+		kafkaController.sendMessage(new ConnessioneCreatedEvent(tipo, utente));
+		return connessione;
 	}	
 
 	/* Trova tutte le connessioni. */ 
