@@ -29,3 +29,7 @@ server:
 #spring.jpa.show-sql: true
 # disable OSIV
 spring.jpa.open-in-view: false
+
+kafka:
+  bootstrapAddress: localhost:29092
+  topics: enigmi,connessioni
