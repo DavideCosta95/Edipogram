@@ -15,8 +15,7 @@ public class EnigmiService {
 		this.enigmiRepository = enigmiRepository;
 	}
 
- 	public Enigma createEnigma(String autore, String tipo, String tipoSpecifico, String titolo, String[] testo, String[] soluzione) {
-		Enigma enigma = new Enigma(autore, tipo, tipoSpecifico, titolo, testo, soluzione); 
+ 	public Enigma addEnigma(Enigma enigma) {
 		return enigmiRepository.save(enigma);
 	}
 

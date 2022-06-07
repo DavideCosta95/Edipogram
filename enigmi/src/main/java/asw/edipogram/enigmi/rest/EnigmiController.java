@@ -2,6 +2,9 @@ package asw.edipogram.enigmi.rest;
 
 import asw.edipogram.enigmi.domain.*;
 
+import asw.edipogram.enigmi.messaging.EnigmaCreatedEvent;
+import asw.edipogram.enigmi.messaging.KafkaController;
+import asw.edipogram.enigmi.utils.EnigmaModelConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,23 +24,25 @@ import java.util.stream.*;
 public class EnigmiController {
 
 	private final EnigmiService enigmiService;
+	private final KafkaController kafkaController;
+	private final EnigmaModelConverter enigmaModelConverter;
 
 	@Autowired
-	private EnigmiController(EnigmiService enigmiService) {
+	private EnigmiController(EnigmiService enigmiService, KafkaController kafkaController, EnigmaModelConverter enigmaModelConverter) {
 		this.enigmiService = enigmiService;
+		this.kafkaController = kafkaController;
+		this.enigmaModelConverter = enigmaModelConverter;
 	}
 
 	/* Crea un nuovo enigma. */ 
 	@PostMapping("/enigmi")
 	public Enigma createEnigma(@RequestBody CreateEnigmaRequest request) {
-		String autore = request.getAutore();
-		String tipo = request.getTipo();
-		String tipoSpecifico = request.getTipoSpecifico();
-		String titolo = request.getTitolo();
-		String[] testo = request.getTesto();
-		String[] soluzione = request.getSoluzione();
-		log.info("REST CALL: createEnigma {}, {}, {}, {}, {}, {}", autore, tipo, tipoSpecifico, titolo, toString(testo), toString(soluzione));
-		return enigmiService.createEnigma(autore, tipo, tipoSpecifico, titolo, testo, soluzione);
+		Enigma enigma = enigmaModelConverter.toEnigma(request);
+		enigma = enigmiService.addEnigma(enigma);
+		log.info("REST CALL: addEnigma {}", enigma);
+		EnigmaCreatedEvent enigmaCreatedEvent = enigmaModelConverter.toEnigmaCreatedEvent(enigma);
+		kafkaController.sendMessage(enigmaCreatedEvent);
+		return enigma;
 	}	
 
 	/* Trova l'enigma con enigmaId. */ 
@@ -62,7 +67,7 @@ public class EnigmiController {
 		String[] soluzione;
 		if (enigma != null) {
 			soluzione = enigma.getSoluzione(); 
-			log.info("REST CALL: getSoluzioneEnigma {}: {}", enigmaId, toString(soluzione));
+			log.info("REST CALL: getSoluzioneEnigma {}: {}", enigmaId, soluzione);
 			return soluzione;
 		} else {
 			log.info("REST CALL: getSoluzioneEnigma {}: Enigma not found", enigmaId);
@@ -136,9 +141,5 @@ public class EnigmiController {
 				.stream()
 				.map(GetEnigmaResponse::new)
 				.collect(Collectors.toList());
-	}
-
-	private static String toString(String[] a) {
-		return Arrays.toString(a); 
 	}
 }
