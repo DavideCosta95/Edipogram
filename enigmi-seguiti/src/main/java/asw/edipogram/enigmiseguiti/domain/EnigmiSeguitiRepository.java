@@ -6,5 +6,5 @@ import java.util.Collection;
 
 public interface EnigmiSeguitiRepository extends CrudRepository<EnigmaSeguito, EnigmaSeguito.EnigmaSeguitoKey> {
 
-	Collection<EnigmaSeguito> findByUtente(String utente);
+	Collection<EnigmaSeguito> findByUtenteOrderByIdEnigma(String utente);
 }
