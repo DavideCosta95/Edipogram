@@ -23,7 +23,4 @@ public class EnigmaCreatedEvent {
 
 	@NonNull
 	private String[] testo;
-
-	@NonNull
-	private String[] soluzione;
 }

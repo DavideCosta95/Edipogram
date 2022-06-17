@@ -67,7 +67,6 @@ public class MessageConsumerFactory {
 		String tipoSpecifico = enigmaCreatedEvent.getTipoSpecifico();
 		String titolo = enigmaCreatedEvent.getTitolo();
 		String[] testo = enigmaCreatedEvent.getTesto();
-		String[] soluzione = enigmaCreatedEvent.getSoluzione();
-		return new Enigma(autore, tipo, tipoSpecifico, titolo, testo, soluzione);
+		return new Enigma(autore, tipo, tipoSpecifico, titolo, testo);
 	}
 }

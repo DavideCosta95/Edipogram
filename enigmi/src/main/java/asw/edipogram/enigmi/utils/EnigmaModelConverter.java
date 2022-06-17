@@ -26,7 +26,6 @@ public class EnigmaModelConverter {
 		String tipoSpecifico = enigma.getTipoSpecifico();
 		String titolo = enigma.getTitolo();
 		String[] testo = enigma.getTesto();
-		String[] soluzione = enigma.getSoluzione();
-		return new EnigmaCreatedEvent(autore, tipo, tipoSpecifico, titolo, testo, soluzione);
+		return new EnigmaCreatedEvent(autore, tipo, tipoSpecifico, titolo, testo);
 	}
 }

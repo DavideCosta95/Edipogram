@@ -42,19 +42,13 @@ public class Enigma implements Comparable<Enigma> {
 	@Type(type = "asw.edipogram.enigmiseguiti.domain.StringArrayType")
 	private String[] testo;
 
-	@Column(name = "soluzione", nullable = false, columnDefinition = "text[]")
-	@NonNull
-	@Type(type = "asw.edipogram.enigmiseguiti.domain.StringArrayType")
-	private String[] soluzione;
-
-	public Enigma(@NonNull String autore, @NonNull String tipo, @NonNull String tipoSpecifico, @NonNull String titolo, @NonNull String[] testo, @NonNull String[] soluzione) {
+	public Enigma(@NonNull String autore, @NonNull String tipo, @NonNull String tipoSpecifico, @NonNull String titolo, @NonNull String[] testo) {
 		this();
 		this.autore = autore;
 		this.tipo = tipo;
 		this.tipoSpecifico = tipoSpecifico;
 		this.titolo = titolo;
 		this.testo = testo;
-		this.soluzione = soluzione;
 	}
 
 	@Override

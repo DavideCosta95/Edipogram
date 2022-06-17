@@ -7,8 +7,7 @@ create table enigmi
     tipo varchar not null,
     tipo_specifico varchar not null,
     titolo varchar not null,
-    testo text[] not null,
-    soluzione text[] not null
+    testo text[] not null
 );
 
 create table connessioni
