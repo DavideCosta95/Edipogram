@@ -1,0 +1,460 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: edipogram
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enigmi
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: enigmi
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: enigmi
+    spec:
+      containers:
+        - name: enigmi-container
+          image: gren/asw-enigmi:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connessioni
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: connessioni
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: connessioni
+    spec:
+      containers:
+        - name: connessioni-container
+          image: gren/asw-connessioni:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enigmi-seguiti
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: enigmi-seguiti
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: enigmi-seguiti
+    spec:
+      containers:
+        - name: enigmiseguiti-container
+          image: gren/asw-enigmiseguiti:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: api-gateway
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: api-gateway
+    spec:
+      containers:
+        - name: apigateway-container
+          image: gren/asw-apigateway:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: consul
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: consul
+    spec:
+      containers:
+        - name: consul-container
+          image: consul
+          ports:
+            - containerPort: 8500
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-enigmi
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: db-enigmi
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: db-enigmi
+    spec:
+      containers:
+        - name: dbenigmi-container
+          image: gren/asw-dbenigmi:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-connessioni
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: db-connessioni
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: db-connessioni
+    spec:
+      containers:
+        - name: dbconnessioni-container
+          image: gren/asw-dbconnessioni:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-enigmi-seguiti
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: db-enigmi-seguiti
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: db-enigmi-seguiti
+    spec:
+      containers:
+        - name: dbenigmiseguiti-container
+          image: gren/asw-dbenigmiseguiti:latest
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: zookeeper
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: zookeeper
+    spec:
+      containers:
+        - name: zookeeper-container
+          image: confluentinc/cp-zookeeper:latest
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+          ports:
+            - containerPort: 2181
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-broker
+  namespace: edipogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edipogram
+      service: kafka-broker
+  template:
+    metadata:
+      labels:
+        app: edipogram
+        service: kafka-broker
+    spec:
+      containers:
+        - name: kafka-container
+          image: confluentinc/cp-kafka:latest
+          env:
+            - name: KAFKA_BROKER_ID
+              value: "1"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper:2181
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://kafka-broker:9092,PLAINTEXT_HOST://kafka-broker:29092
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: PLAINTEXT
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+          ports:
+            - name: "port2181"
+              containerPort: 2181
+            - name: "port9092"
+              containerPort: 9092
+            - name: "port29092"
+              containerPort: 29092
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enigmi
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: enigmi
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: consul
+  ports:
+    - protocol: TCP
+      port: 8500
+      targetPort: 8500
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-enigmi
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: db-enigmi
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-connessioni
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: db-connessioni
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-enigmi-seguiti
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: db-enigmi-seguiti
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connessioni
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: connessioni
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enigmi-seguiti
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: enigmi-seguiti
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: api-gateway
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: zookeeper
+  ports:
+    - protocol: TCP
+      port: 2181
+      targetPort: 2181
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-broker
+  namespace: edipogram
+spec:
+  selector:
+    app: edipogram
+    service: kafka-broker
+  ports:
+    - protocol: TCP
+      name: "port2181"
+      port: 2181
+      targetPort: 2181
+    - protocol: TCP
+      name: "port9092"
+      port: 9092
+      targetPort: 9092
+    - protocol: TCP
+      name: "port29092"
+      port: 29092
+      targetPort: 29092
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: edipogram
+  #annotations:
+    #kubernetes.io/ingress.class: "traefik"
+    #traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
