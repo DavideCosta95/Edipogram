@@ -1,13 +1,13 @@
 # application.yml
---- 
-spring: 
-  application: 
+---
+spring:
+  application:
     name: enigmi
   cloud:
     consul:
       host: consul
       port: 8500
-      discovery: 
+      discovery:
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${random.value}
         healthCheckPath: /actuator/health
         healthCheckInterval: 10s
@@ -15,15 +15,16 @@ spring:
         # dopo quanto tempo consul deve smettere di restituire servizi che non rispondono all'health check? 
         healthCheckCriticalTimeout: 45s
         # consul deve restituire solo servizi che passano l'health check (default=false) 
-        queryPassing: true 
-    loadbalancer: 
+        queryPassing: true
+        prefer-ip-address: true
+    loadbalancer:
       ribbon.enabled: false
   datasource:
     url: jdbc:postgresql://db-enigmi:5432/enigmi?user=root&password=password
 
 server:
-  port: ${PORT:${SERVER_PORT:0}}
-#  port: 8080
+  #port: ${PORT:${SERVER_PORT:0}}
+  port: 8080
 
 # fa il logging dei comandi sql eseguiti 
 #spring.jpa.show-sql: true
@@ -31,5 +32,5 @@ server:
 spring.jpa.open-in-view: false
 
 kafka:
-  bootstrapAddress: kafka:29092
+  bootstrapAddress: kafka-broker:29092
   topic: enigmi

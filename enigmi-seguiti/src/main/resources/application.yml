@@ -15,7 +15,8 @@ spring:
         # dopo quanto tempo consul deve smettere di restituire servizi che non rispondono all'health check? 
         healthCheckCriticalTimeout: 45s
         # consul deve restituire solo servizi che passano l'health check (default=false) 
-        queryPassing: true 
+        queryPassing: true
+        prefer-ip-address: true
     loadbalancer: 
       ribbon.enabled: false
   datasource:
@@ -31,5 +32,5 @@ server:
 spring.jpa.open-in-view: false
 
 kafka:
-  bootstrapAddress: kafka:29092
+  bootstrapAddress: kafka-broker:29092
   topics: enigmi,connessioni
