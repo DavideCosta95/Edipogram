@@ -25,6 +25,17 @@ spec:
         - name: enigmi-container
           image: gren/asw-enigmi:latest
           #imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 1
           ports:
             - containerPort: 8080
 
@@ -50,6 +61,17 @@ spec:
         - name: connessioni-container
           image: gren/asw-connessioni:latest
           #imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 1
           ports:
             - containerPort: 8080
 
@@ -74,6 +96,17 @@ spec:
       containers:
         - name: enigmiseguiti-container
           image: gren/asw-enigmiseguiti:latest
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 1
           #imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -99,15 +132,20 @@ spec:
       containers:
         - name: apigateway-container
           image: gren/asw-apigateway:latest
-          #imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 10
+            timeoutSeconds: 1
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
 
 ---
 apiVersion: apps/v1

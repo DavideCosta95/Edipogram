@@ -22,9 +22,9 @@ spring:
   datasource:
     url: jdbc:postgresql://db-connessioni:5432/connessioni?user=root&password=password
 
-server: 
-  port: ${PORT:${SERVER_PORT:0}}
-#  port: 8080
+server:
+# port: ${PORT:${SERVER_PORT:0}}
+  port: 8080
 
 # fa il logging dei comandi sql eseguiti 
 #spring.jpa.show-sql: true

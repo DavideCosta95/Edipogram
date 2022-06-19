@@ -23,8 +23,8 @@ spring:
     url: jdbc:postgresql://db-enigmi-seguiti:5432/enigmi-seguiti?user=root&password=password
 
 server: 
-  port: ${PORT:${SERVER_PORT:0}}
-#  port: 8080
+#  port: ${PORT:${SERVER_PORT:0}}
+   port: 8080
 
 # fa il logging dei comandi sql eseguiti 
 #spring.jpa.show-sql: true
