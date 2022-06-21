@@ -1,7 +1,7 @@
 # EDIPOGRAM  
 
 ## Descrizione  
-Modifica del [progetto proposto](https://github.com/aswroma3/asw/tree/master/projects/asw-edipogram) per il [corso di Architetture dei Sistemi Software](http://cabibbo.inf.uniroma3.it/asw/index.html) A.A. 2021/22 rispetto ai [requisiti forniti](/assets/docs/requisiti.pdf).
+Modifica del [progetto proposto](https://github.com/aswroma3/asw/tree/master/projects/asw-edipogram) per il [corso di Architettura dei Sistemi Software](http://cabibbo.inf.uniroma3.it/asw/index.html) A.A. 2021/22 rispetto ai [requisiti forniti](/assets/docs/requisiti.pdf).
 
 ## Caratteristiche  
 - Le modifiche apportate sono state versionate applicando le pratiche di Gitflow;  
@@ -25,7 +25,7 @@ In entrambi i casi sono disponibili degli script per il popolamento e il testing
 
 ## Deploy tramite Kubernetes  
 Lo script completo di deploy per Kubernetes è presente nella cartella [manifests](/deploy/kubernetes/manifests).  
-Suddetta cartella viene montata come volume tramite docker compose nell'ambito della creazione di un container di `k3s` per fornire un ambiente di deploy riproducibile durante lo sviluppo e il testing.  
+Suddetta cartella viene montata come volume tramite docker compose nell'ambito della creazione di un container di `k3s` per fornire un ambiente di deploy riproducibile e verificabile durante lo sviluppo e il testing.  
 
 - Per avviare l'applicazione, eseguire lo script [run-edipogram.sh](/deploy/kubernetes/run-edipogram.sh).  
 - Per arrestarla, eseguire [stop-edipogram.sh](/deploy/kubernetes/stop-edipogram.sh).  
