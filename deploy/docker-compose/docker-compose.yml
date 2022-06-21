@@ -35,7 +35,7 @@ services:
     container_name: db-enigmi
     image: postgres
     volumes:
-      - ../../enigmi/src/sql:/docker-entrypoint-initdb.d
+      - ../../enigmi/src/sql/create.sql:/docker-entrypoint-initdb.d/create.sql
     restart: always
     environment:
       POSTGRES_DB: enigmi
@@ -46,7 +46,7 @@ services:
     container_name: db-enigmi-seguiti
     image: postgres
     volumes:
-      - ../../enigmi-seguiti/src/sql:/docker-entrypoint-initdb.d
+      - ../../enigmi-seguiti/src/sql/create.sql:/docker-entrypoint-initdb.d/create.sql
     restart: always
     environment:
       POSTGRES_DB: enigmi-seguiti
@@ -57,7 +57,7 @@ services:
     container_name: db-connessioni
     image: postgres
     volumes:
-      - ../../connessioni/src/sql:/docker-entrypoint-initdb.d
+      - ../../connessioni/src/sql/create.sql:/docker-entrypoint-initdb.d/create.sql
     restart: always
     environment:
       POSTGRES_DB: connessioni
